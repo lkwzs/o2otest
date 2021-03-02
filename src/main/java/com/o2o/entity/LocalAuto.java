@@ -10,25 +10,23 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * tb_product_img
+ * tb_local_auto
  * @author 
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductImg extends BaseEntity<Integer> implements Serializable {
+public class LocalAuto extends BaseEntity<Integer> implements Serializable {
     private Integer id;
 
-    private String url;
+    private Integer userId;
 
-    private String desc;
-
-    private Integer priority;
+    private String username;
 
     private Date createTime;
 
-    private Integer productId;
+    private Date updateTime;
 
     private static final long serialVersionUID = 1L;
 

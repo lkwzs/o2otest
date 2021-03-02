@@ -9,14 +9,14 @@ import java.util.List;
 
 public class AreaDaoTest extends BaseTest {
 
-    @Autowired
-    AreaDao areaDao;
-
-    @Test
-    public void  testQuery(){
-        List<Area> areas = areaDao.queryAreas();
-        System.out.println(areas);
-    }
+//    @Autowired
+//    AreaDao areaDao;
+//
+//    @Test
+//    public void  testQuery(){
+//        List<Area> areas = areaDao.queryAreas();
+//        System.out.println(areas);
+//    }
 
 
 }

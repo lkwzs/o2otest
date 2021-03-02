@@ -1,44 +1,32 @@
 package com.o2o.entity;
 
+import com.o2o.base.BaseEntity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 import java.util.Date;
 
-public class WechatAuth {
+/**
+ * tb_wechat_auth
+ * @author 
+ */
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class WechatAuth extends BaseEntity<Integer> implements Serializable {
+    private Integer id;
 
-    private Long id;
+    private Integer userId;
+
     private String openId;
+
     private Date createTime;
-    private PersonInfo personInfo;
 
-    public Long getId() {
-        return id;
-    }
+    private static final long serialVersionUID = 1L;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getOpenId() {
-        return openId;
-    }
-
-    public void setOpenId(String openId) {
-        this.openId = openId;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public PersonInfo getPersonInfo() {
-        return personInfo;
-    }
-
-    public void setPersonInfo(PersonInfo personInfo) {
-        this.personInfo = personInfo;
-    }
 
 }

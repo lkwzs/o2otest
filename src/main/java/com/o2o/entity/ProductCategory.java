@@ -1,52 +1,34 @@
 package com.o2o.entity;
 
+import com.o2o.base.BaseEntity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 import java.util.Date;
 
-public class ProductCategory {
-    private Long id;
-    private Long shopId;
+/**
+ * tb_product_category
+ * @author 
+ */
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class ProductCategory extends BaseEntity<Integer> implements Serializable {
+    private Integer id;
+
+    private Integer shopId;
+
     private String name;
+
     private Integer priority;
+
     private Date createTime;
 
-    public Long getId() {
-        return id;
-    }
+    private static final long serialVersionUID = 1L;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getShopId() {
-        return shopId;
-    }
-
-    public void setShopId(Long shopId) {
-        this.shopId = shopId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getPriority() {
-        return priority;
-    }
-
-    public void setPriority(Integer priority) {
-        this.priority = priority;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
 
 }
