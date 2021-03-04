@@ -96,7 +96,7 @@
 <!--    </where>-->
   </sql>
 
-  <select id="select" resultMap="BaseResultMap">
+  <select id="queryAreas" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from tb_area

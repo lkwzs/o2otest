@@ -1,8 +1,11 @@
 package com.o2o.util;
 
 import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.geometry.Position;
+import net.coobird.thumbnailator.geometry.Positions;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,7 +26,9 @@ public class ImageUtil {
 		File dest = new File(FileUtil.getImgBasePath() + relativeAddr);
 		try {
 			/*根据thumbnail的流生成文件*/
-			Thumbnails.of(thumbnail.getInputStream()).size(200, 200).outputQuality(0.25f).toFile(dest);
+			Thumbnails.of(thumbnail.getInputStream())
+//					.watermark(Positions.BOTTOM_LEFT, ImageIO.read()) 水印生成
+					.size(200, 200).outputQuality(0.25f).toFile(dest);
 		} catch (IOException e) {
 			throw new RuntimeException("创建缩略图失败：" + e.toString());
 		}

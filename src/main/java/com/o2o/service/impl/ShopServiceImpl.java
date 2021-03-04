@@ -90,7 +90,7 @@ public class ShopServiceImpl implements ShopService {
 				try {
 					if (shopImg != null) {
 						addShopImg(shop, shopImg);
-						effectedNum = shopDao.updateShop(shop);
+						effectedNum = shopDao.updateByPrimaryKeySelective(shop);
 						if (effectedNum <= 0) {
 							throw new RuntimeException("创建图片地址失败");
 						}

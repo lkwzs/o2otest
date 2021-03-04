@@ -119,4 +119,28 @@
       parent_id = #{parentId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <sql id="where">
+  <where>
+    <if test="shopCategoryCondition.id!=null">
+      and parent_id is null
+    </if>
+    <if test="shopCategoryCondition.desc!=null">
+      and parent_id is not null
+    </if>
+    <if test="shopCategoryCondition.parentId!=null">
+      and parent_id = #{shopCategoryCondition.parentId}
+    </if>
+  </where>
+  </sql>
+
+  <select id="queryShopCategory" resultType="com.o2o.entity.ShopCategory">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM
+    tb_shop_category
+    <include refid="where"/>
+    ORDER BY
+    priority DESC
+  </select>
 </mapper>
