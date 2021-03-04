@@ -13,5 +13,10 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
  		<setting name="mapUnderscoreToCamelCase" value="true"/>  <!-- 驼峰式命名  -->
 		<setting name="useColumnLabel" value="true"/>  <!-- 使用列标签替换列别名 默认true  -->
 	</settings>
+
+<!--	<plugins>-->
+<!--		<plugin interceptor="com.imooc.o2o.dao.split.DynamicDataSourceInterceptor">-->
+<!--		</plugin>-->
+<!--	</plugins>-->
 	
 </configuration>

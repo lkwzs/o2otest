@@ -11,27 +11,56 @@
     <!-- 引入jdbc配置文件 -->
     <context:property-placeholder location="classpath:jdbc.properties"/>
 
-    <!--主库数据源-->
-    <bean id="masterDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-        <property name="driverClass" value="${jdbc.driver}"/>
-        <property name="jdbcUrl" value="${jdbc.url}"/>
-        <property name="user" value="${jdbc.username}"/>
-        <property name="password" value="${jdbc.password}"/>
-
+    <!--数据源-->
+    <bean id="abstractDataSource" abstract="true"
+          class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <!-- c3p0连接池的私有属性 -->
         <property name="maxPoolSize" value="30" />
         <property name="minPoolSize" value="10" />
-
+        <property name="initialPoolSize" value="10"/>
+        <!-- 关闭连接后不自动commit -->
         <property name="autoCommitOnClose" value="false" />
+        <!-- 获取连接超时时间 -->
         <property name="checkoutTimeout" value="10000" />
-        <property name="acquireRetryAttempts" value="2"/>
-
+        <!-- 当获取连接失败重试次数 -->
+        <property name="acquireRetryAttempts" value="2" />
     </bean>
+    <bean id="master" parent="abstractDataSource">
+        <!-- 配置连接池属性 -->
+        <property name="driverClass" value="${jdbc.driver}" />
+        <property name="jdbcUrl" value="${jdbc.master.url}" />
+        <property name="user" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+    </bean>
+    <bean id="slave" parent="abstractDataSource">
+        <!-- 配置连接池属性 -->
+        <property name="driverClass" value="${jdbc.driver}" />
+        <property name="jdbcUrl" value="${jdbc.slave.url}" />
+        <property name="user" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+    </bean>
+    <!-- 配置动态数据源，这儿targetDataSources就是路由数据源所对应的名称 -->
+    <bean id="dynamicDataSource" class="com.o2o.dao.split.DynamicDataSource">
+        <property name="targetDataSources">
+            <map>
+                <entry value-ref="master" key="master"></entry>
+                <entry value-ref="slave" key="slave"></entry>
+            </map>
+        </property>
+    </bean>
+    <bean id="dataSource"
+          class="org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy">
+        <property name="targetDataSource">
+            <ref bean="dynamicDataSource" />
+        </property>
+    </bean>
+
 
 
     <!-- 创建SqlSessionFactory，同时指定数据源-->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="configLocation" value="classpath:mybatis-config.xml"/>
-        <property name="dataSource" ref="masterDataSource"/>
+        <property name="dataSource" ref="dataSource"/>
 <!--        扫描entity 使用别名 -->
         <property name="typeAliasesPackage" value="com.o2o.entity" />
         <property name="mapperLocations" value="classpath:mapper/*.xml" />
