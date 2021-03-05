@@ -1,20 +1,18 @@
 package com.o2o.service;
 
+import com.o2o.base.BaseService;
 import com.o2o.dto.ShopExecution;
 import com.o2o.entity.Shop;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-public interface ShopService {
+public interface ShopService extends BaseService<Shop,Integer> {
 
-//	ShopExecution getShopList(Shop shopCondition, int pageIndex, int pageSize);
-
-
-
+	public ShopExecution getShopList(Shop shopCondition, int pageIndex, int pageSize);
 
 
 	/**
 	 * 创建商铺
-	 * 
+	 *
 	 * @param Shop
 	 *            shop
 	 * @return ShopExecution shopExecution
@@ -31,6 +29,6 @@ public interface ShopService {
 	 * @return
 	 * @throws RuntimeException
 	 */
-//	ShopExecution modifyShop(Shop shop, CommonsMultipartFile shopImg) throws RuntimeException;
+	ShopExecution modifyShop(Shop shop, CommonsMultipartFile shopImg) throws RuntimeException;
 
 }

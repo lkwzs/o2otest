@@ -60,6 +60,7 @@ public class FileUtil {
 		return nowTimeStr + rannum;
 	}
 
+	/*根据文件路径判断是否为文件或文件夹后删除文件或文件夹*/
 	public static void deleteFile(String storePath) {
 		File file = new File(getImgBasePath() + storePath);
 		if (file.exists()) {

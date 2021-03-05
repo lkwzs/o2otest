@@ -13,25 +13,35 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="enable_status" jdbcType="INTEGER" property="enableStatus" />
     <result column="advice" jdbcType="VARCHAR" property="advice" />
-    <result column="area_id" jdbcType="INTEGER" property="areaId" />
-    <result column="owner_id" jdbcType="INTEGER" property="ownerId" />
-    <result column="shop_category_id" jdbcType="INTEGER" property="shopCategoryId" />
+    <association column="area_id" property="area"  javaType="com.o2o.entity.Area">
+      <id column="area_id" property="id"/>
+      <result column="aname" property="name"/>
+    </association>
+<!--    <association column="owner_id" property="owner"  javaType="com.o2o.entity.PersonInfo">-->
+<!--      <id column="owner_id" property="id"/>-->
+<!--      <result column="name" property="name"/>-->
+<!--    </association>-->
+    <association column="shop_category_id" property="shopCategory"  javaType="com.o2o.entity.ShopCategory">
+      <id column="shop_category_id" property="id"/>
+      <result column="scname" property="name"/>
+    </association>
   </resultMap>
   <sql id="Base_Column_List">
     id, `name`, `desc`, address, phone_number, image, priority, create_time, update_time, 
     enable_status, advice, area_id, owner_id, shop_category_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from tb_shop
-    where id = #{id,jdbcType=INTEGER}
+    select
+     s.id, s.`name`, s.`desc`, s.address, s.phone_number, s.image, s.priority, s.create_time, s.update_time,
+    s.enable_status, s.advice, s.area_id, s.owner_id, s.shop_category_id, a.id  , a.name  aname, sc.id , sc.name scname
+    from tb_shop s,tb_shop_category sc,tb_area a
+    where s.id = #{id,jdbcType=INTEGER} AND s.area_id=a.id AND  s.shop_category_id=sc.id
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_shop
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insertShop" keyColumn="id" keyProperty="id" parameterType="com.o2o.entity.Shop" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.o2o.entity.Shop" useGeneratedKeys="true">
     insert into tb_shop (`name`, `desc`, address, 
       phone_number, image, priority, 
       create_time, update_time, enable_status, 
@@ -185,9 +195,61 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       enable_status = #{enableStatus,jdbcType=INTEGER},
       advice = #{advice,jdbcType=VARCHAR},
-      area_id = #{areaId,jdbcType=INTEGER},
-      owner_id = #{ownerId,jdbcType=INTEGER},
-      shop_category_id = #{shopCategoryId,jdbcType=INTEGER}
+      area_id = #{area.id,jdbcType=INTEGER},
+      owner_id = #{owner.id,jdbcType=INTEGER},
+      shop_category_id = #{shopCategory.id,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="queryShopCount" resultType="java.lang.Integer">
+    select count(*)  from  tb_shop
+  </select>
+
+  <select id="queryShopList"  resultMap="BaseResultMap">
+    select
+     s.id, s.`name`, s.`desc`, s.address, s.phone_number, s.image, s.priority, s.create_time, s.update_time,
+    s.enable_status, s.advice, s.area_id, s.owner_id, s.shop_category_id, a.id  , a.name  aname, sc.id , sc.name scname
+    from tb_shop s,tb_shop_category sc,tb_area a
+    <where>
+      <if
+              test="shopCondition.shopCategory != null and
+			shopCondition.shopCategory.id != null">
+        and s.shop_category_id =
+        #{shopCondition.shopCategory.id}
+      </if>
+      <if
+              test="shopCondition.shopCategory != null
+			and shopCondition.shopCategory.parent!=null
+			and shopCondition.shopCategory.parent.id !=null">
+        and s.shop_category_id in (select shop_category_id from
+        tb_shop_category
+        WHERE parent_id =
+        #{shopCondition.shopCategory.parent.id})
+      </if>
+      <if
+              test="shopCondition.area != null and
+			shopCondition.area.id != null">
+        and s.area_id =
+        #{shopCondition.area.id}
+      </if>
+      <if test="shopCondition.name != null">
+        and s.shop_name like '%${shopCondition.name}%'
+      </if>
+      <if test="shopCondition.enableStatus != null">
+        and s.enable_status = #{shopCondition.enableStatus}
+      </if>
+      <if
+              test="shopCondition.owner != null and shopCondition.owner.id != null">
+        and s.owner_id = #{shopCondition.owner.id}
+      </if>
+      AND
+      s.area_id=a.id
+      AND
+      s.shop_category_id = sc.id
+    </where>
+    ORDER BY
+    s.priority DESC
+    LIMIT #{rowIndex},#{pageSize};
+  </select>
+
 </mapper>
