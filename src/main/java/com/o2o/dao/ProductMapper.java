@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ProductMapper extends BaseMapper<Product, Integer> {
+    int updateProductCategoryToNull(int productCategoryId);
 }

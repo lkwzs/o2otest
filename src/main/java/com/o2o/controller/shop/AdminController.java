@@ -29,4 +29,10 @@ public class AdminController {
 		return "shop/shopmanagement";
 	}
 
+	@RequestMapping(value = "/productcategorymanagement", method = RequestMethod.GET)
+	private String productCategoryManage() {
+		// 转发至商品类别管理页面
+		return "shop/productcategorymanagement";
+	}
+
 }
