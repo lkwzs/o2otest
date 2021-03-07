@@ -4,10 +4,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
-
 @Controller
 @RequestMapping(value = "shop", method = { RequestMethod.GET,
 		RequestMethod.POST })
@@ -33,6 +29,18 @@ public class AdminController {
 	private String productCategoryManage() {
 		// 转发至商品类别管理页面
 		return "shop/productcategorymanagement";
+	}
+
+	@RequestMapping(value = "/productoperation")
+	public String productOperation() {
+		// 转发至商品添加/编辑页面
+		return "shop/productedit";
+	}
+
+	@RequestMapping(value = "/productmanagement")
+	public String productManagement() {
+		// 转发至商品管理页面
+		return "shop/productmanagement";
 	}
 
 }

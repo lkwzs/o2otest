@@ -1,6 +1,7 @@
 package com.o2o.controller.shop;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.o2o.dto.ImageHolder;
 import com.o2o.dto.ShopExecution;
 import com.o2o.entity.Area;
 import com.o2o.entity.PersonInfo;
@@ -143,13 +144,21 @@ public class ShopManagementController {
         Shop shop = null;
         String shopStr = HttpServletRequestUtil.getString(request, "shopStr");
         MultipartHttpServletRequest multipartRequest = null;
-        CommonsMultipartFile shopImg = null;
+        ImageHolder shopImg = null;
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
                 request.getSession().getServletContext());
         if (multipartResolver.isMultipart(request)) {
             multipartRequest = (MultipartHttpServletRequest) request;
-            shopImg = (CommonsMultipartFile) multipartRequest
+            CommonsMultipartFile file =  (CommonsMultipartFile) multipartRequest
                     .getFile("shopImg");
+            try {
+                shopImg.setImageName(file.getOriginalFilename());
+                shopImg.setImage(file.getInputStream());
+            } catch (IOException e) {
+                modelMap.put("success", false);
+                modelMap.put("errMsg", "上传图片错误"+ e.getMessage());
+                return modelMap;
+            }
         } else {
             modelMap.put("success", false);
             modelMap.put("errMsg", "上传图片不能为空");
@@ -207,14 +216,22 @@ public class ShopManagementController {
         ObjectMapper mapper = new ObjectMapper();
         Shop shop = null;
         String shopStr = HttpServletRequestUtil.getString(request, "shopStr");
+        ImageHolder shopImg = null;
         MultipartHttpServletRequest multipartRequest = null;
-        CommonsMultipartFile shopImg = null;
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
                 request.getSession().getServletContext());
         if (multipartResolver.isMultipart(request)) {
             multipartRequest = (MultipartHttpServletRequest) request;
-            shopImg = (CommonsMultipartFile) multipartRequest
+            CommonsMultipartFile file =  (CommonsMultipartFile) multipartRequest
                     .getFile("shopImg");
+            try {
+                shopImg.setImageName(file.getOriginalFilename());
+                shopImg.setImage(file.getInputStream());
+            } catch (IOException e) {
+                modelMap.put("success", false);
+                modelMap.put("errMsg", "上传图片错误"+ e.getMessage());
+                return modelMap;
+            }
         }
         try {
             shop = mapper.readValue(shopStr, Shop.class);

@@ -45,6 +45,7 @@ public class ProductCategoryServiceImpl extends BaseServiceImpl<ProductCategory,
     @Override
     @Transactional
     public ProductCategoryExecution deleteProductCategory(int productCategoryId, int shopId) {
+
         try {
             int effectedNum = productMapper.updateProductCategoryToNull(productCategoryId);
             if (effectedNum < 0) {

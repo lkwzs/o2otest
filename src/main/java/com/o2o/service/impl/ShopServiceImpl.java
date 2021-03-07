@@ -3,6 +3,7 @@ package com.o2o.service.impl;
 
 import com.o2o.base.BaseServiceImpl;
 import com.o2o.dao.ShopMapper;
+import com.o2o.dto.ImageHolder;
 import com.o2o.dto.ShopExecution;
 import com.o2o.entity.Shop;
 import com.o2o.entity.ShopCategory;
@@ -67,7 +68,7 @@ public class ShopServiceImpl extends BaseServiceImpl<Shop,Integer> implements Sh
 	 * 2.保证事务方法的执行时间尽可能短，不要穿插其他网络操作，RPC/HTTP请求或者剥离到事务方法外部
 	 * 3.不是所有的方法都需要事务，如只有一条修改操作，只读操作不需要事务控制
 	 */
-	public ShopExecution addShop(Shop shop, CommonsMultipartFile shopImg)
+	public ShopExecution addShop(Shop shop, ImageHolder shopImg)
 			throws RuntimeException {
 		if (shop == null) {
 			return new ShopExecution(ShopStateEnum.NULL_SHOP_INFO);
@@ -134,7 +135,7 @@ public class ShopServiceImpl extends BaseServiceImpl<Shop,Integer> implements Sh
 
 	@Override
 	@Transactional
-	public ShopExecution modifyShop(Shop shop, CommonsMultipartFile shopImg)
+	public ShopExecution modifyShop(Shop shop, ImageHolder shopImg)
 			throws RuntimeException {
 
 		if (shop == null || shop.getId() == null) {
@@ -165,7 +166,7 @@ public class ShopServiceImpl extends BaseServiceImpl<Shop,Integer> implements Sh
 		}
 	}
 
-	private void addShopImg(Shop shop, CommonsMultipartFile shopImg) {
+	private void addShopImg(Shop shop, ImageHolder shopImg) {
 		String dest = FileUtil.getShopImagePath(shop.getId());
 		String shopImgAddr = ImageUtil.generateThumbnail(shopImg, dest);
 		shop.setImage(shopImgAddr);
