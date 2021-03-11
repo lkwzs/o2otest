@@ -33,6 +33,8 @@ public class ShopCategory extends BaseEntity<Integer> implements Serializable {
     private Date updateTime;
 
     private Integer parentId;
+    // 父类别
+    private ShopCategory parent;
 
     private static final long serialVersionUID = 1L;
 

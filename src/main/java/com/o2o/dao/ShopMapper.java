@@ -26,5 +26,5 @@ public interface ShopMapper extends BaseMapper<Shop, Integer> {
     List<Shop> queryShopList(@Param("shopCondition") Shop shopCondition, @Param("rowIndex") int rowIndex,
                              @Param("pageSize") int pageSize);
 
-    int queryShopCount(Shop shopCondition);
+    int queryShopCount(@Param("shopCondition") Shop shopCondition);
 }

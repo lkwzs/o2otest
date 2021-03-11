@@ -15,5 +15,7 @@ public interface ShopCategoryService extends BaseService<ShopCategory, Integer> 
 
     List<ShopCategory> queryShopCategory(ShopCategory shopCategoryInfo);
 
-    public List<ShopCategory> getAllSecondLevelShopCategory() throws IOException;
+//    public List<ShopCategory> getAllSecondLevelShopCategory() throws IOException;
+
+    List<ShopCategory> getShopCategoryList(ShopCategory shopCategory);
 }

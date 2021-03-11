@@ -119,4 +119,17 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+  <select id="select"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include> from tb_head_line
+    <where>
+      <if test="enableStatus !=null ">
+        and enable_status =
+        #{enableStatus}
+      </if>
+
+    </where>
+  </select>
 </mapper>
